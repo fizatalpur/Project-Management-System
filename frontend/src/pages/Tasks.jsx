@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Title from "../components/Title";
 import Table from "../components/task/Table";
 import Spinner from "../components/Spinner";
 import { useGetTasksQuery } from "../redux/slices/api/taskApiSlice";
 
-const Tasks = () => {
+
+const Tasks = ({task}) => {
  
-  const {data, isLoading} = useGetTasksQuery({
-    strQuery: "" , search: ""
+  const {data, isLoading, refetch} = useGetTasksQuery({
+    strQuery: task,
   });
+
+  useEffect(()=>{
+      refetch();
+    }, [task, refetch]);
 
    return isLoading? (
       <div className='py-10'>
@@ -27,6 +32,8 @@ const Tasks = () => {
       </div>
     </div>
   )
+ 
+
 }
 
 export default Tasks;
